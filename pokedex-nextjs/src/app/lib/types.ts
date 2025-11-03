@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type PokemonType = string; 
 
 export interface BasePokemon {
@@ -37,3 +39,15 @@ export interface PokemonSearchParams {
     name?: string;
     type?: string; 
 }
+
+export interface GenericCardProps<T> {
+  data: T;
+  renderContent: (item: T) => React.ReactNode;
+  onClick?: (item: T) => void;
+  className?: React.ComponentProps<'div'>['className'];
+}
+
+export type AppPokemonPageProps = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};

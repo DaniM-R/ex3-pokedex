@@ -2,17 +2,19 @@ import { Suspense } from 'react';
 import PokemonGrid from '@/app/components/PokemonGrid';
 import FilterArea from '@/app/components/FilterArea';
 import { getPokemonList } from '@/app/lib/api/pokemon';
+import Link from 'next/link';
+import React from 'react';
 
-interface HomePageProps {
+interface SearchPageProps {
   searchParams: {
     name?: string;
     type?: string;
   };
 }
 
-export default async function HomePage({ searchParams }: HomePageProps) {
+export default async function SearchPage({ searchParams }: SearchPageProps) {
   const currentSearchParams = await searchParams;
-  
+
   const allPokemon = await getPokemonList();
   
   const { name, type } = currentSearchParams;
@@ -32,15 +34,20 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Pokédex - Primeira Geração (150)</h1>
-      
+      <h1 className="text-3xl font-bold mb-6">Busca Avançada de Pokémons</h1>
+     
+
       <FilterArea currentFilters={{ name, type }} />
       
       <div className="mt-8">
+        <Link href="/" className="text-blue-600 hover:text-blue-800 mb-4 inline-block font-medium">
+            ← Voltar para a Página Principal
+        </Link>
+        
         {filteredPokemon.length === 0 ? (
           <p className="text-xl text-red-500">Nenhum Pokémon encontrado com os filtros aplicados.</p>
         ) : (
-          <Suspense fallback={<div>Carregando Pokémons...</div>}> 
+          <Suspense fallback={<div>Carregando resultados da busca...</div>}>
             <PokemonGrid pokemonList={filteredPokemon} />
           </Suspense>
         )}
